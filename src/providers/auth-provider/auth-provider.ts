@@ -3,77 +3,79 @@
 import type { AuthBindings } from "@refinedev/core";
 import Cookies from "js-cookie";
 
-const mockUsers = [
-  {
-    email: "admin@refine.dev",
-    name: "John Doe",
-    avatar: "https://i.pravatar.cc/150?img=1",
-    roles: ["admin"],
-  },
-  {
-    email: "editor@refine.dev",
-    name: "Jane Doe",
-    avatar: "https://i.pravatar.cc/150?img=1",
-    roles: ["editor"],
-  },
-  {
-    email: "demo@refine.dev",
-    name: "Jane Doe",
-    avatar: "https://i.pravatar.cc/150?img=1",
-    roles: ["user"],
-  },
-];
-
 export const authProvider: AuthBindings = {
-  login: async ({ email, username, password, remember }) => {
-    // Suppose we actually send a request to the back end here.
-    const user = mockUsers.find((item) => item.email === email);
-
-    if (user) {
-      Cookies.set("auth", JSON.stringify(user), {
-        expires: 30, // 30 days
-        path: "/",
+  login: async ({ email, password }) => {
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
+
+      if (response.ok) {
+        const { user, token } = await response.json();
+        Cookies.set("auth", JSON.stringify({ user, token }), {
+          expires: 2/24, // 2 hours
+          path: "/",
+        });
+        return {
+          success: true,
+          redirectTo: "/",
+        };
+      }
+
       return {
-        success: true,
-        redirectTo: "/",
+        success: false,
+        error: {
+          name: "LoginError",
+          message: "Invalid email or password",
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: {
+          name: "LoginError",
+          message: "An error occurred during login",
+        },
       };
     }
-
-    return {
-      success: false,
-      error: {
-        name: "LoginError",
-        message: "Invalid username or password",
-      },
-    };
   },
   register: async (params) => {
-    // Suppose we actually send a request to the back end here.
-    const user = mockUsers.find((item) => item.email === params.email);
-
-    if (user) {
-      Cookies.set("auth", JSON.stringify(user), {
-        expires: 30, // 30 days
-        path: "/",
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(params),
       });
+
+      if (response.ok) {
+        return {
+          success: true,
+          redirectTo: "/login",
+        };
+      }
+
       return {
-        success: true,
-        redirectTo: "/",
+        success: false,
+        error: {
+          message: "Register failed",
+          name: "Invalid email or password",
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: {
+          message: "An error occurred during registration",
+          name: "RegisterError",
+        },
       };
     }
-    return {
-      success: false,
-      error: {
-        message: "Register failed",
-        name: "Invalid email or password",
-      },
-    };
   },
   forgotPassword: async (params) => {
     // Suppose we actually send a request to the back end here.
-    const user = mockUsers.find((item) => item.email === params.email);
-
+    const user = false;
     if (user) {
       //we can send email with reset password link here
       return {
@@ -116,6 +118,8 @@ export const authProvider: AuthBindings = {
   check: async () => {
     const auth = Cookies.get("auth");
     if (auth) {
+      const { token } = JSON.parse(auth);
+      // Aqui você pode adicionar uma verificação adicional do token, se necessário
       return {
         authenticated: true,
       };
@@ -130,16 +134,16 @@ export const authProvider: AuthBindings = {
   getPermissions: async () => {
     const auth = Cookies.get("auth");
     if (auth) {
-      const parsedUser = JSON.parse(auth);
-      return parsedUser.roles;
+      const { user } = JSON.parse(auth);
+      return user.roles;
     }
     return null;
   },
   getIdentity: async () => {
     const auth = Cookies.get("auth");
     if (auth) {
-      const parsedUser = JSON.parse(auth);
-      return parsedUser;
+      const { user } = JSON.parse(auth);
+      return user;
     }
     return null;
   },

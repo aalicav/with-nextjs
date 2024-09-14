@@ -45,21 +45,21 @@ export default function RootLayout({
                     authProvider={authProvider}
                     resources={[
                       {
-                        name: "blog_posts",
-                        list: "/blog-posts",
-                        create: "/blog-posts/create",
-                        edit: "/blog-posts/edit/:id",
-                        show: "/blog-posts/show/:id",
+                        name: "testimonials",
+                        list: "/testimonials",
+                        create: "/testimonials/create",
+                        edit: "/testimonials/edit/:id",
+                        show: "/testimonials/show/:id",
                         meta: {
                           canDelete: true,
                         },
                       },
                       {
-                        name: "categories",
-                        list: "/categories",
-                        create: "/categories/create",
-                        edit: "/categories/edit/:id",
-                        show: "/categories/show/:id",
+                        name: "members",
+                        list: "/members",
+                        create: "/members/create",
+                        edit: "/members/edit/:id",
+                        show: "/members/show/:id",
                         meta: {
                           canDelete: true,
                         },

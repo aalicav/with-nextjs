@@ -1,7 +1,9 @@
-"use client";
+"use client"
 
 import dataProviderSimpleRest from "@refinedev/simple-rest";
 
-const API_URL = "https://api.fake-rest.refine.dev";
+import { axiosInstance } from "@/utils/axiosInstance";
 
-export const dataProvider = dataProviderSimpleRest(API_URL);
+const API_URL = process.env.API_URL ?? '';
+
+export const dataProvider = dataProviderSimpleRest(API_URL, axiosInstance);

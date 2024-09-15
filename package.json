@@ -11,6 +11,9 @@
   "dependencies": {
     "@ant-design/icons": "5.0.1",
     "@ant-design/nextjs-registry": "^1.0.0",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@refinedev/antd": "^5.43.1",
     "@refinedev/cli": "^2.16.38",
     "@refinedev/core": "^4.54.1",
@@ -24,6 +27,7 @@
     "antd": "^5.17.0",
     "cross-env": "^7.0.3",
     "crypto-js": "^4.2.0",
+    "framer-motion": "^11.5.4",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.30.1",

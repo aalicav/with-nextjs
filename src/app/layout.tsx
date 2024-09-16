@@ -34,7 +34,6 @@ export default function RootLayout({
       <body>
         <Suspense>
           <AntdRegistry>
-            <GitHubBanner />
             <RefineKbarProvider>
               <ColorModeContextProvider defaultMode={theme?.value}>
                 <DevtoolsProvider>

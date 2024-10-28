@@ -44,6 +44,7 @@ import { useState, useEffect } from "react";
 import { ColumnType } from "antd/es/table";
 import { BaseRecord } from "@refinedev/core";
 import { Avatar } from "@chakra-ui/react";
+import _ from "lodash";
 
 const { Title, Text } = Typography;
 
@@ -98,6 +99,9 @@ export default function MemberList() {
       brasaoReceivedDate: item.brasaoReceivedDate,
       coins: item.coins,
       isJailed: item.isJailed ? "Sim" : "Não",
+      createdAt: _.isDate(item.createdAt)
+        ? item.createdAt.toISOString()
+        : item.createdAt,
     }),
   });
 
@@ -266,7 +270,9 @@ export default function MemberList() {
         <FilterDropdown {...props}>
           <Select style={{ width: 200 }}>
             <Select.Option value="Profissional">Profissional</Select.Option>
-            <Select.Option value="Entreternimento">Entreternimento</Select.Option>
+            <Select.Option value="Entreternimento">
+              Entreternimento
+            </Select.Option>
           </Select>
         </FilterDropdown>
       ),
@@ -359,18 +365,27 @@ export default function MemberList() {
     {
       dataIndex: "brasaoReceivedDate",
       title: "Data de Recebimento do Brasão",
-      render: (value: string) => value ? <DateField value={value} format="DD/MM/YYYY" /> : "-",
+      render: (value: string) =>
+        value ? <DateField value={value} format="DD/MM/YYYY" /> : "-",
       sorter: (a: any, b: any) => {
         if (!a.brasaoReceivedDate) return 1;
         if (!b.brasaoReceivedDate) return -1;
-        return new Date(a.brasaoReceivedDate).getTime() - new Date(b.brasaoReceivedDate).getTime();
+        return (
+          new Date(a.brasaoReceivedDate).getTime() -
+          new Date(b.brasaoReceivedDate).getTime()
+        );
       },
       filterDropdown: (props: any) => (
         <FilterDropdown {...props}>
           <Input placeholder="Buscar data" />
         </FilterDropdown>
       ),
-      filterIcon: <SearchOutlined onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />,
+      filterIcon: (
+        <SearchOutlined
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        />
+      ),
     },
     {
       dataIndex: "coins",
@@ -382,15 +397,20 @@ export default function MemberList() {
           <Input placeholder="Buscar quantidade de moedas" />
         </FilterDropdown>
       ),
-      filterIcon: <SearchOutlined onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />,
+      filterIcon: (
+        <SearchOutlined
+          onPointerEnterCapture={undefined}
+          onPointerLeaveCapture={undefined}
+        />
+      ),
     },
     {
       dataIndex: "isJailed",
       title: "Preso",
       render: (value: boolean) => (value ? "Sim" : "Não"),
       filters: [
-        { text: 'Sim', value: true },
-        { text: 'Não', value: false },
+        { text: "Sim", value: true },
+        { text: "Não", value: false },
       ],
       onFilter: (value: any, record: any) => record.isJailed === value,
     },
@@ -399,7 +419,11 @@ export default function MemberList() {
       dataIndex: "profileImageId",
       render: (profileImageId: string) => (
         <Avatar
-          src={profileImageId ? `${apiUrl}/members/image/${profileImageId}` : undefined}
+          src={
+            profileImageId
+              ? `${apiUrl}/members/image/${profileImageId}`
+              : undefined
+          }
           name="Foto de Perfil"
         />
       ),
@@ -532,7 +556,9 @@ export default function MemberList() {
           <Form.Item name="tiktokUsage" label="Uso do TikTok">
             <Select allowClear>
               <Select.Option value="Profissional">Profissional</Select.Option>
-              <Select.Option value="Entreternimento">Entreternimento</Select.Option>
+              <Select.Option value="Entreternimento">
+                Entreternimento
+              </Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -550,7 +576,10 @@ export default function MemberList() {
               <Select.Option value={false}>Não</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item name="brasaoReceivedDate" label="Data de Recebimento do Brasão">
+          <Form.Item
+            name="brasaoReceivedDate"
+            label="Data de Recebimento do Brasão"
+          >
             <DatePicker />
           </Form.Item>
           <Form.Item name="coins" label="Moedas">

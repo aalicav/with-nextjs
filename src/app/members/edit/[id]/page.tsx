@@ -1,10 +1,18 @@
 "use client";
 
 import { Edit, useForm, useFileUploadState } from "@refinedev/antd";
-import { Form, Input, DatePicker, Switch, Select, Upload, InputNumber } from "antd";
+import {
+  Form,
+  Input,
+  DatePicker,
+  Switch,
+  Select,
+  Upload,
+  InputNumber,
+} from "antd";
 import { useApiUrl } from "@refinedev/core";
-import { Avatar } from "@chakra-ui/react";
-import moment from 'moment';
+import moment from "moment";
+import Avatar from "antd/lib/avatar";
 
 export default function MemberEdit() {
   const { formProps, saveButtonProps, queryResult } = useForm();
@@ -21,16 +29,12 @@ export default function MemberEdit() {
         initialValues={{
           ...formProps.initialValues,
           birthDate: moment(formProps.initialValues?.["birthDate"]),
-          brasaoReceivedDate: formProps.initialValues?.["brasaoReceivedDate"] 
-            ? moment(formProps.initialValues?.["brasaoReceivedDate"]) 
+          brasaoReceivedDate: formProps.initialValues?.["brasaoReceivedDate"]
+            ? moment(formProps.initialValues?.["brasaoReceivedDate"])
             : undefined,
         }}
       >
-        <Form.Item
-          label="Nome"
-          name={["name"]}
-          rules={[{ required: true }]}
-        >
+        <Form.Item label="Nome" name={["name"]} rules={[{ required: true }]}>
           <Input />
         </Form.Item>
         <Form.Item
@@ -40,10 +44,7 @@ export default function MemberEdit() {
         >
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Nova Senha"
-          name={["password"]}
-        >
+        <Form.Item label="Nova Senha" name={["password"]}>
           <Input.Password />
         </Form.Item>
         <Form.Item
@@ -106,11 +107,7 @@ export default function MemberEdit() {
         >
           <InputNumber />
         </Form.Item>
-        <Form.Item
-          label="Preso"
-          name={["isJailed"]}
-          valuePropName="checked"
-        >
+        <Form.Item label="Preso" name={["isJailed"]} valuePropName="checked">
           <Switch />
         </Form.Item>
         <Form.Item label="Foto de Perfil">
@@ -126,8 +123,8 @@ export default function MemberEdit() {
           >
             {member?.profileImageId ? (
               <Avatar
-                src={`${apiUrl}/members/image/${member.profileImageId}`}
                 size="large"
+                src={`${apiUrl}/members/image/${member.profileImageId}`}
               />
             ) : (
               "Upload"

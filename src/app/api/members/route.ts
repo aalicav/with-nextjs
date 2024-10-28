@@ -41,7 +41,6 @@ export async function GET(req: NextRequest) {
       .sort(sort)
       .skip(start)
       .limit(limit)
-      .select('-password'); // Excluir a senha dos resultados
 
     const response = NextResponse.json(members);
     response.headers.set("X-Total-Count", totalCount.toString());

@@ -20,6 +20,9 @@ export function encrypt(text: string): string {
 }
 
 export function decrypt(ciphertext: string): string {
+  if(!ciphertext) {
+    return '';
+  }
   const key = getDerivedKey(SALT);
   const decrypted = CryptoJS.AES.decrypt(ciphertext, key, {
     mode: CryptoJS.mode.ECB,
